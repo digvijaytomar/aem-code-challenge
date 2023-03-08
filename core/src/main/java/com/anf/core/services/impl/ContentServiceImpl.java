@@ -11,12 +11,12 @@ import javax.jcr.Node;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.sling.api.resource.ValueMap;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.commons.json.JSONArray;
 import org.apache.sling.commons.json.JSONObject;
+import org.apache.sling.commons.json.JSONException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +29,9 @@ import com.anf.core.constants.ApplicationConstants;
 @Component(immediate = true, service = ContentService.class)
 public class ContentServiceImpl implements ContentService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ContentServiceImpl.class);
-	
 	/***Begin Code - Digvijay Singh Tomar ***/
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ContentServiceImpl.class);
 	
     /*
 	 * commitUserDetails method will commit user detail creating
@@ -80,6 +80,9 @@ public class ContentServiceImpl implements ContentService {
 				}
 			}
     	}
+    	catch (JSONException je) {
+			LOGGER.error("JSONException occurred while saving user detail:: ", je.getMessage(), je);
+		}
 		catch (Exception ex) {
 			LOGGER.error("Exception occurred while saving user detail:: ", ex.getMessage(), ex);
 		}
@@ -118,6 +121,9 @@ public class ContentServiceImpl implements ContentService {
 				
 			}
     	}
+    	catch (JSONException je) {
+			LOGGER.error("JSONException occurred while validating user age:: ", je.getMessage(), je);
+		}
 		catch (Exception ex) {
 			LOGGER.error("Exception occurred while validating user detail:: ", ex.getMessage(), ex);
 		}

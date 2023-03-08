@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
+import org.apache.sling.api.resource.LoginException;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.propertytypes.ServiceDescription;
@@ -49,7 +50,7 @@ public class PageCreateListner implements ResourceChangeListener {
 
 	@Reference
 	private ResourceResolverFactory resourceResolverFactory;
-
+	
 	private ResourceResolver resourceResolver;
 
 	@Override
@@ -61,10 +62,9 @@ public class PageCreateListner implements ResourceChangeListener {
 		Map<String, Object> pageEventService = new HashMap<String, Object>();
 		pageEventService.put(ResourceResolverFactory.SUBSERVICE, "pageEventService");
 		
-	    ResourceResolver resourceResolver = null;
 	    String createdPageJcrPath = "";
 	    try {
-	        resourceResolver = resourceResolverFactory.getServiceResourceResolver(pageEventService);
+	    	this.resourceResolver = resourceResolverFactory.getServiceResourceResolver(pageEventService);
 	        for (ResourceChange resourceChange : resourceChangeList) {
 				String resourcePath = resourceChange.getPath();
 				if(resourcePath.endsWith(JcrConstants.JCR_CONTENT)){
@@ -75,7 +75,7 @@ public class PageCreateListner implements ResourceChangeListener {
 	         * adapting page resource through node to set boolean
 	         * property in jcr:content node of the page
 	         */
-	        Resource resource = resourceResolver.getResource(createdPageJcrPath);
+	        Resource resource = this.resourceResolver.getResource(createdPageJcrPath);
 	        if(null != resource){
 				Node adaptCreatedPageNode = resource.adaptTo(Node.class);
 				boolean pageCreated = true;
@@ -84,8 +84,16 @@ public class PageCreateListner implements ResourceChangeListener {
 				adaptCreatedPageNode.save();
 	        }
 	    }
+	    catch(LoginException ex){
+	    	LOGGER.error("Exception occurred while getting resource resolver for page creation listener:: ", ex.getMessage(), ex);
+	    }
 	    catch(Exception ex){
 	    	LOGGER.error("Exception occurred while setting property on page creation:: ", ex.getMessage(), ex);
 	    }
+	    finally {
+			if (this.resourceResolver != null && this.resourceResolver.isLive()) {
+				this.resourceResolver.close();
+			}
+		}
 	}
 }

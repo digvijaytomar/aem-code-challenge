@@ -15,30 +15,24 @@
  */
 package com.anf.core.servlets;
 
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import javax.jcr.Node;
 import com.anf.core.services.ContentService;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.servlets.annotations.SlingServletPaths;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.api.servlets.HttpConstants;
 
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import org.apache.sling.api.resource.PersistenceException;
-import javax.jcr.RepositoryException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +56,7 @@ public class UserServlet extends SlingAllMethodsServlet {
     protected void doGet(final SlingHttpServletRequest req,
             final SlingHttpServletResponse resp) throws ServletException, IOException {
         // Make use of ContentService to write the business logic
+    	
     	/***Begin Code - Digvijay Singh Tomar ***/
     	try {
     		resp.setContentType("application/json");
@@ -90,6 +85,7 @@ public class UserServlet extends SlingAllMethodsServlet {
 		} catch (Exception ex) {
 			LOGGER.error("Exception occurred during process POST request for save user detail :: ", ex.getMessage(), ex);
 		}
+    	
     	/***END Code*****/
     }
 }
