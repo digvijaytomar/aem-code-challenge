@@ -31,3 +31,19 @@ select,
 textarea {
     font: inherit;
 }
+.newsitems{
+	width:70%;
+    margin:auto;
+}
+.newsitems .cmp-newsfeed__img{
+	float:left;
+    width:30%;
+    padding-right:5%;
+}
+.newsitems .cmp-newsfeed__author-currentdate{
+	font-weight:bold;
+    color:#cecece;
+}
+.newsitems .cmp-newsfeed__description{
+	font-weight:regular;
+}
